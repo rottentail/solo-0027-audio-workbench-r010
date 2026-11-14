@@ -86,4 +86,6 @@ python -m unittest discover -v
 docker compose up --build -d
 ```
 
+`tests/test_pcm_compatibility.py` 经真实 HTTP 路径验证 `/clip`、`/mix` 的输出可再次作为 `/inspect`、`/clip`、`/mix` 的输入：逐样本比较解码后的 16 位整数、核对 WAV 头部事实与 `/inspect` 返回值一致，并覆盖 30 秒上限素材、二次处理与并发请求的输入对应关系。断言为精确相等，不设容差，也不缩短合法素材。
+
 容器使用非 root 用户和持久卷，端口只绑定本机。停止信号由 Python 服务接收并关闭 PCM/FFmpeg 工作线程。当前不支持滚动共享同一工作区，也没有音频效果、降采样或分布式队列。
